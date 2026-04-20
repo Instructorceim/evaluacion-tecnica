@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluación Web – Dibujante Técnico Mecánico</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 600px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    a.back {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #007BFF;
+      text-decoration: none;
+    }
+    a.back:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back">← Volver al Menú Principal</a>
+
+    <h1>Evaluación Web – Dibujante Técnico Mecánico</h1>
+    <p>Esta evaluación consta de 60 preguntas de selección múltiple. Tienes 30 minutos para completarla.</p>
+    <button id="start-btn">Iniciar Evaluación</button>
+
+    <div id="quiz-container" style="display:none;">
+      <div id="question-container">
+        <h2 id="question-text"></h2>
+        <div id="options-container"></div>
+        <button id="next-btn">Siguiente</button>
+      </div>
+      <div id="result-container" style="display:none;">
+        <h2>Resultado Final</h2>
+        <p id="score-text"></p>
+        <p id="status-text"></p>
+        <button id="restart-btn">Reiniciar Evaluación</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Código JS de la evaluación aquí
+    const startBtn = document.getElementById('start-btn');
+    const quizContainer = document.getElementById('quiz-container');
+    const questionContainer = document.getElementById('question-container');
+    const resultContainer = document.getElementById('result-container');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const nextBtn = document.getElementById('next-btn');
+    const scoreText = document.getElementById('score-text');
+    const statusText = document.getElementById('status-text');
+    const restartBtn = document.getElementById('restart-btn');
+
+    let currentQuestionIndex;
+    let score;
+
+    // Banco de preguntas (ejemplo reducido)
+    const questions = [
+      {
+        pregunta: "¿Cuál es el propósito de un P&ID en ingeniería industrial?",
+        opciones: ["A) Representar la distribución de equipos en planta", "B) Mostrar tuberías, válvulas y controles del proceso", "C) Mostrar planos arquitectónicos", "D) Representar circuitos eléctricos"],
+        respuesta_correcta: "B"
+      },
+      {
+        pregunta: "¿Qué significa ISO 9001 en el contexto de gestión documental?",
+        opciones: ["A) Seguridad laboral", "B) Gestión de calidad", "C) Gestión ambiental", "D) Eficiencia energética"],
+        respuesta_correcta: "B"
+      },
+      {
+        pregunta: "¿Cuál es la función de un bloque (block) en AutoCAD?",
+        opciones: ["A) Aumentar el tamaño del archivo", "B) Grupo de objetos insertado como uno", "C) Solo decorar el dibujo", "D) Cambiar el color del archivo"],
+        respuesta_correcta: "B"
+      }
+    ];
+
+    startBtn.addEventListener('click', startQuiz);
+
+    function startQuiz() {
+      startBtn.style.display = 'none';
+      quizContainer.style.display = 'block';
+      currentQuestionIndex = 0;
+      score = 0;
+      showQuestion();
+    }
+
+    function showQuestion() {
+      resetState();
+      const currentQuestion = questions[currentQuestionIndex];
+      questionText.textContent = currentQuestion.pregunta;
+
+      currentQuestion.opciones.forEach((opcion, index) => {
+        const button = document.createElement('button');
+        button.textContent = opcion;
+        button.dataset.answer = opcion.charAt(0);
+        button.addEventListener('click', selectAnswer);
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function resetState() {
+      while (optionsContainer.firstChild) {
+        optionsContainer.removeChild(optionsContainer.firstChild);
+      }
+      nextBtn.style.display = 'none';
+    }
+
+    function selectAnswer(e) {
+      const selectedButton = e.target;
+      const answer = selectedButton.dataset.answer;
+
+      Array.from(optionsContainer.children).forEach(button => {
+        button.classList.remove('selected');
+        if (button.dataset.answer === answer) {
+          button.classList.add('selected');
+        }
+      });
+
+      if (answer === questions[currentQuestionIndex].respuesta_correcta) {
+        score++;
+      }
+
+      Array.from(optionsContainer.children).forEach(button => {
+        button.disabled = true;
+        if (button.dataset.answer === questions[currentQuestionIndex].respuesta_correcta) {
+          button.style.backgroundColor = '#28a745';
+          button.style.color = 'white';
+        }
+      });
+
+      nextBtn.style.display = 'block';
+    }
+
+    nextBtn.addEventListener('click', () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      questionContainer.style.display = 'none';
+      resultContainer.style.display = 'block';
+
+      const percentage = Math.round((score / questions.length) * 100);
+      scoreText.textContent = `Obtuviste ${score} de ${questions.length} (${percentage}%)`;
+
+      if (percentage >= 70) {
+        statusText.textContent = '✅ ¡Aprobado!';
+        statusText.style.color = '#28a745';
+      } else {
+        statusText.textContent = '❌ Reprobado.';
+        statusText.style.color = '#dc3545';
+      }
+    }
+
+    restartBtn.addEventListener('click', () => {
+      resultContainer.style.display = 'none';
+      startBtn.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
