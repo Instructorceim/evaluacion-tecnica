@@ -11,7 +11,7 @@ body {
 
 .container {
   width: 90%;
-  max-width: 600px;
+  max-width: 700px;
   background: white;
   padding: 20px;
   border-radius: 8px;
@@ -21,6 +21,27 @@ body {
 h1 {
   text-align: center;
   color: #333;
+}
+
+#progress-bar {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+#progress {
+  width: 0%;
+  height: 10px;
+  background-color: #007BFF;
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+#timer {
+  text-align: right;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 button {
@@ -53,10 +74,32 @@ button:hover {
 }
 
 .selected {
-  background-color: #007BFF;
+  background-color: #003d7a; /* Azul oscuro */
+  color: white;
+}
+
+.correct {
+  background-color: #28a745 !important;
+  color: white;
+}
+
+.incorrect {
+  background-color: #dc3545 !important;
   color: white;
 }
 
 #result-container h2, #result-container p {
   text-align: center;
+}
+
+#review-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.review-item {
+  padding: 8px;
+  margin: 4px 0;
+  background-color: #f9f9f9;
+  border-radius: 4px;
 }
