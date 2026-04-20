@@ -64,18 +64,19 @@ button:hover {
   display: block;
   margin-bottom: 10px;
   padding: 10px;
-  background-color: #eee;
+  background-color: #f0f0f0; /* Fondo claro */
+  color: #333; /* Texto oscuro */
   border-radius: 4px;
   cursor: pointer;
 }
 
 .option:hover {
-  background-color: #ddd;
+  background-color: #e0e0e0; /* Un poco más oscuro al pasar el mouse */
 }
 
 .selected {
   background-color: #003d7a; /* Azul oscuro */
-  color: white;
+  color: white; /* Texto blanco */
 }
 
 .correct {
