@@ -3,39 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Evaluación Dibujante Técnico</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Centro de Evaluación Técnica</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 600px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav li {
+      margin: 10px 0;
+    }
+    nav a {
+      display: block;
+      padding: 10px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      text-align: center;
+    }
+    nav a:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>Evaluación Dibujante Técnico Mecánico</h1>
-    <div id="start-screen">
-      <button id="start-btn">Iniciar Evaluación</button>
-    </div>
-    <div id="quiz-container" style="display:none;">
-      <div id="progress-bar">
-        <div id="progress"></div>
-      </div>
-      <div id="timer">Tiempo restante: <span id="time-left">30:00</span></div>
-
-      <div id="question-container">
-        <h2 id="question-text"></h2>
-        <div id="options-container"></div>
-        <button id="next-btn">Siguiente</button>
-      </div>
-
-      <div id="result-container" style="display:none;">
-        <h2>Resultado Final</h2>
-        <p id="score-text"></p>
-        <p id="status-text"></p>
-        <div id="answers-review">
-          <h3>Resumen de respuestas:</h3>
-          <ul id="review-list"></ul>
-        </div>
-        <button id="restart-btn">Reiniciar Evaluación</button>
-      </div>
-    </div>
+    <h1>Centro de Evaluación Técnica</h1>
+    <nav>
+      <ul>
+        <li><a href="evaluacion.html">Plantilla de Evaluación Práctica</a></li>
+        <li><a href="#">Evaluación Web (Online)</a></li>
+        <li><a href="#">Entrevista Técnica</a></li>
+        <!-- Puedes añadir más enlaces aquí -->
+      </ul>
+    </nav>
   </div>
-  <script src="script.js"></script>
 </body>
 </html>
