@@ -449,3 +449,4 @@ restartBtn.addEventListener('click', () => {
   resultContainer.style.display = 'none';
   startBtn.style.display = 'block';
 });
+
