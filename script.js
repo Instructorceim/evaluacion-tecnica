@@ -18,307 +18,385 @@ let userAnswers = [];
 let timer;
 let timeLeft = 30 * 60; // 30 minutos en segundos
 
-// Banco de 60 preguntas
+// Banco de 60 preguntas con categoría (Técnicos, Normativos, Básicos)
 const questions = [
   {
-    pregunta: "¿Qué tipo de planos incluyen representaciones de tuberías, válvulas y equipos en procesos industriales?",
-    opciones: ["A) Planos arquitectónicos", "B) P&ID", "C) Planos topográficos", "D) Planos eléctricos"],
-    respuesta_correcta: "B"
+    pregunta: "¿Cuál es el propósito de un P&ID en ingeniería industrial?",
+    opciones: ["A) Representar la distribución de equipos en planta", "B) Mostrar tuberías, válvulas y controles del proceso", "C) Mostrar planos arquitectónicos", "D) Representar circuitos eléctricos"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   },
   {
-    pregunta: "¿Cuál es la finalidad del control de versiones en planos técnicos?",
-    opciones: ["A) Aumentar la cantidad de archivos", "B) Asegurar trazabilidad, integridad y evitar confusiones", "C) Reducir el tamaño de los archivos", "D) Mejorar la velocidad de carga"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué significa ISO 9001 en el contexto de gestión documental?",
+    opciones: ["A) Seguridad laboral", "B) Gestión de calidad", "C) Gestión ambiental", "D) Eficiencia energética"],
+    respuesta_correcta: "B",
+    categoria: "Normativos"
   },
   {
-    pregunta: "¿Cuál de los siguientes es un estándar internacional para dibujo técnico?",
-    opciones: ["A) ISO", "B) NCh 3262", "C) DS 132", "D) Ley 16.744"],
-    respuesta_correcta: "A"
+    pregunta: "¿Cuál es la función de un bloque (block) en AutoCAD?",
+    opciones: ["A) Aumentar el tamaño del archivo", "B) Grupo de objetos insertado como uno", "C) Solo decorar el dibujo", "D) Cambiar el color del archivo"],
+    respuesta_correcta: "B",
+    categoria: "Normativos"
   },
   {
-    pregunta: "¿Qué debe considerarse al definir el alcance de un paquete de planos?",
-    opciones: ["A) Solo el tiempo disponible", "B) Necesidades de los activos, procedimientos y riesgos", "C) Solo el costo del proyecto", "D) Solo la opinión del cliente"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué norma chilena se refiere a equidad y no discriminación?",
+    opciones: ["A) ISO 14001", "B) NCh 3262", "C) DS 132", "D) Ley 16.744"],
+    respuesta_correcta: "B",
+    categoria: "Normativos"
   },
   {
-    pregunta: "¿Qué sistema se utiliza comúnmente para gestionar la trazabilidad de documentos en minería?",
-    opciones: ["A) Microsoft Word", "B) SAP u otros sistemas ERP", "C) Google Drive", "D) PowerPoint"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué sistema se utiliza comúnmente para la trazabilidad de documentos en minería?",
+    opciones: ["A) SAP", "B) Word", "C) Excel", "D) PowerPoint"],
+    respuesta_correcta: "A",
+    categoria: "Normativos"
   },
   {
-    pregunta: "¿Qué significa “levantamiento en terreno” en el contexto de planos técnicos?",
-    opciones: ["A) Eliminar información antigua", "B) Recopilar información real de instalaciones o equipos", "C) Dibujar planos sin salir de oficina", "D) Solo revisar planos antiguos"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué debe verificarse antes de iniciar un levantamiento en terreno?",
+    opciones: ["A) Que el sol esté visible", "B) Que haya electricidad", "C) Que los EPP estén disponibles y en buen estado", "D) Que haya internet"],
+    respuesta_correcta: "C",
+    categoria: "Normativos"
+  },
+  {
+    pregunta: "¿Cuál es el propósito del control de versiones en planos?",
+    opciones: ["A) Aumentar el número de archivos", "B) Garantizar integridad y trazabilidad", "C) Hacer copias de seguridad", "D) Comprimir archivos"],
+    respuesta_correcta: "B",
+    categoria: "Normativos"
   },
   {
     pregunta: "¿Qué es un plano isométrico?",
-    opciones: ["A) Representación en dos dimensiones", "B) Representación tridimensional simplificada de tuberías", "C) Plano topográfico", "D) Plano de edificio"],
-    respuesta_correcta: "B"
+    opciones: ["A) Vista en 2D de un objeto", "B) Vista tridimensional simplificada de tuberías", "C) Vista de planta", "D) Vista de fachada"],
+    respuesta_correcta: "B",
+    categoria: "Básicos"
   },
   {
-    pregunta: "¿Qué debe hacerse si se encuentra una discrepancia entre el plano y la realidad en terreno?",
-    opciones: ["A) Ignorarla", "B) Registrarla, evaluarla y proponer actualización", "C) Cambiar el plano sin revisión", "D) Dejarlo para otro turno"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué tipo de archivo es recomendable usar para gestionar planos CAD?",
-    opciones: ["A) PDF", "B) DWG o DWF", "C) JPG", "D) TXT"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Cuál es una buena práctica para gestionar archivos maestros?",
-    opciones: ["A) Guardar todo en el escritorio", "B) Usar nomenclatura estandarizada y control de versiones", "C) Renombrar archivos al azar", "D) Guardar solo una copia"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué herramienta se puede usar para medir distancias en terreno durante un levantamiento?",
-    opciones: ["A) Solo cinta métrica", "B) Estación total, cinta métrica o láser", "C) Solo lápiz y papel", "D) Solo planos antiguos"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué debe verificarse antes de actualizar un archivo CAD?",
-    opciones: ["A) Que esté guardado en la nube", "B) Que sea la versión correcta y esté respaldado", "C) Que tenga colores bonitos", "D) Que se haya impreso"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Cuál es el propósito de una capa (layer) en un archivo CAD?",
-    opciones: ["A) Cambiar el color del archivo", "B) Organizar información gráfica de manera lógica", "C) Aumentar el tamaño del archivo", "D) Solo decorar el dibujo"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué debe hacerse al terminar un levantamiento en terreno?",
-    opciones: ["A) Irse sin más", "B) Comparar con planos anteriores y registrar discrepancias", "C) Solo tomar fotos", "D) Mandar un correo"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es un bloque (block) en AutoCAD?",
-    opciones: ["A) Un archivo protegido", "B) Un grupo de objetos que se inserta como un solo elemento", "C) Un tipo de texto", "D) Una herramienta de impresión"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Cuál es el objetivo del modelado 3D en ingeniería?",
-    opciones: ["A) Solo para impresión", "B) Visualizar, simular y coordinar sistemas complejos", "C) Aumentar el peso del archivo", "D) Solo para presentaciones"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es un plano de layout?",
-    opciones: ["A) Diseño de un edificio", "B) Distribución general de equipos y estructuras", "C) Solo planos eléctricos", "D) Plano de seguridad"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué debe hacerse si un plano no coincide con el terreno?",
-    opciones: ["A) Ajustar el terreno", "B) Actualizar el plano con la información real", "C) Dejarlo como está", "D) Borrarlo"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Cuál es el propósito del control documental?",
-    opciones: ["A) Aumentar el número de archivos", "B) Asegurar integridad, acceso y trazabilidad", "C) Hacer backups en la nube", "D) Comprimir archivos"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es PLM?",
-    opciones: ["A) Programa de Lenguaje Mecánico", "B) Gestión del Ciclo de Vida del Producto", "C) Plan de Lectura Mecánica", "D) Proceso de Levantamiento Minero"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es la calibración de un instrumento?",
-    opciones: ["A) Limpiarlo", "B) Comparar su lectura con un patrón de referencia", "C) Guardarlo en caja", "D) Cambiar su color"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué significa trazabilidad en metrología?",
-    opciones: ["A) Seguir a los operarios", "B) Relación demostrable con patrones nacionales o internacionales", "C) Registrar el número de veces usado", "D) Imprimir etiquetas"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Cuál de los siguientes NO es un instrumento de medición?",
-    opciones: ["A) Pie de metro", "B) Reloj comparador", "C) Martillo", "D) Micrómetro"],
-    respuesta_correcta: "C"
-  },
-  {
-    pregunta: "¿Qué se evalúa al medir la incertidumbre de una medición?",
-    opciones: ["A) Solo el precio del instrumento", "B) La confiabilidad del resultado", "C) La duración del proceso", "D) El color del instrumento"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es la resolución de un instrumento?",
-    opciones: ["A) Su capacidad para resolver problemas", "B) La menor diferencia que puede detectar", "C) Su tiempo de respuesta", "D) Su tamaño físico"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Cuál es el propósito de un patrón de calibración?",
-    opciones: ["A) Decorar el laboratorio", "B) Servir como referencia de medida confiable", "C) Aumentar la velocidad de medición", "D) Reducir costos"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué debe hacerse antes de iniciar una medición?",
-    opciones: ["A) Comenzar sin preparación", "B) Verificar estado del instrumento y calibración", "C) Solo revisar la batería", "D) Guardar el instrumento"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es un sistema de unidades?",
-    opciones: ["A) Un grupo de usuarios", "B) Conjunto de unidades de medida estandarizadas", "C) Un tipo de archivo", "D) Un programa de dibujo"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Cuál es el sistema internacional de unidades?",
-    opciones: ["A) Imperial", "B) SI (Sistema Internacional)", "C) Técnico", "D) Binario"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué significa “exactitud” en metrología?",
-    opciones: ["A) Rapidez de medición", "B) Cercanía del resultado al valor verdadero", "C) Tamaño del instrumento", "D) Cantidad de mediciones hechas"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué debe hacerse si una medición está fuera de tolerancia?",
-    opciones: ["A) Ignorarla", "B) Registrarla, evaluarla y reportarla", "C) Ajustarla manualmente", "D) Volver a medir sin registrar"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué sistema se usa comúnmente para reportar mediciones en minería?",
-    opciones: ["A) Correo personal", "B) SAP u otro sistema ERP", "C) WhatsApp", "D) Cartelera física"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es la repetibilidad en metrología?",
-    opciones: ["A) Medir varias veces con diferentes instrumentos", "B) Obtener resultados similares bajo mismas condiciones", "C) Cambiar el método de medición", "D) Medir solo una vez"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué se debe considerar al elegir un instrumento de medición?",
-    opciones: ["A) Solo el color", "B) Parámetro a medir, rango y tolerancia", "C) Solo el precio", "D) Solo la marca"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué tipo de desgaste se evalúa frecuentemente con metrología?",
-    opciones: ["A) Desgaste visual", "B) Desgaste dimensional", "C) Desgaste de color", "D) Desgaste de sonido"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es la comprobación de mediciones?",
-    opciones: ["A) Medir solo una vez", "B) Verificar la validez y exactitud del resultado", "C) Solo revisar el instrumento", "D) Guardar el valor en papel"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Cuál es el propósito de medir tolerancias?",
-    opciones: ["A) Aumentar el tamaño del objeto", "B) Asegurar que el componente funcione correctamente", "C) Cambiar el material", "D) Reducir la velocidad de producción"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué tipo de medición se realiza para evaluar desalineaciones?",
-    opciones: ["A) Dimensional", "B) Geométrica (como coaxialidad o paralelismo)", "C) Solo visual", "D) Solo de temperatura"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué debe incluirse en el registro de una medición?",
-    opciones: ["A) Solo el valor", "B) Fecha, responsable, valor, instrumento y condiciones", "C) Solo el nombre del equipo", "D) Solo el turno"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué relación existe entre metrología y mantenimiento?",
-    opciones: ["A) No tienen relación", "B) La metrología permite evaluar estado de equipos", "C) Solo se usa en ventas", "D) Solo se aplica en talleres"],
-    respuesta_correcta: "B"
+    pregunta: "¿Cuál es un riesgo común en un espacio confinado?",
+    opciones: ["A) Ruido excesivo", "B) Falta de ventilación y gases tóxicos", "C) Temperatura alta", "D) Iluminación baja"],
+    respuesta_correcta: "B",
+    categoria: "Básicos"
   },
   {
     pregunta: "¿Qué significa DS 132?",
-    opciones: ["A) Documento de seguridad", "B) Decreto Supremo de Seguridad Minera", "C) Documento de sistema", "D) Departamento de salud"],
-    respuesta_correcta: "B"
+    opciones: ["A) Ley de tránsito", "B) Decreto Supremo de Seguridad Minera", "C) Documento de sistema", "D) Norma de calidad"],
+    respuesta_correcta: "B",
+    categoria: "Básicos"
   },
   {
-    pregunta: "¿Qué es un ART?",
-    opciones: ["A) Análisis de Riesgos del Trabajo", "B) Accidente Realizado en Turno", "C) Área de Reparación Temporal", "D) Acción Responsable de Turno"],
-    respuesta_correcta: "A"
-  },
-  {
-    pregunta: "¿Cuál es la función del EPP?",
-    opciones: ["A) Proteger la ropa de trabajo", "B) Proteger al trabajador de riesgos", "C) Solo para apariencia", "D) Registrar horas de trabajo"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es un FRM?",
+    pregunta: "¿Cuál es la función del FRM en minería?",
     opciones: ["A) Factor de Riesgo Mínimo", "B) Factor de Riesgo Crítico", "C) Fondo de Riesgo Minero", "D) Formulario de Riesgo Mensual"],
-    respuesta_correcta: "B"
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   },
   {
-    pregunta: "¿Qué debe hacerse si se detecta una condición insegura?",
-    opciones: ["A) Continuar trabajando", "B) Detener la tarea, notificar y aplicar controles", "C) Esperar a que ocurra un accidente", "D) Decirlo al final del día"],
-    respuesta_correcta: "B"
-  },
-  {
-    pregunta: "¿Qué es un espacio confinado?",
-    opciones: ["A) Un lugar con mucha luz", "B) Área con ventilación limitada y posibles riesgos", "C) Un lugar amplio", "D) Solo un baño"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué debe hacerse si se detecta una condición insegura en terreno?",
+    opciones: ["A) Ignorarla", "B) Continuar trabajando", "C) Detener la tarea y notificar", "D) Esperar a que ocurra un accidente"],
+    respuesta_correcta: "C",
+    categoria: "Técnicos"
   },
   {
     pregunta: "¿Qué es un near miss?",
     opciones: ["A) Un error grave", "B) Un incidente que pudo haber causado daño", "C) Un accidente leve", "D) Un descanso"],
-    respuesta_correcta: "B"
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   },
   {
-    pregunta: "¿Qué debe hacerse en caso de una emergencia?",
-    opciones: ["A) Quedarse quieto", "B) Seguir el plan de emergencia", "C) Salir corriendo sin aviso", "D) Esperar a que otros actúen"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué representa un plano de layout?",
+    opciones: ["A) Vista en corte de una estructura", "B) Distribución general de equipos", "C) Detalle de una pieza", "D) Vista de fachada"],
+    respuesta_correcta: "B",
+    categoria: "Normativos"
   },
   {
-    pregunta: "¿Qué es ISO 45001?",
-    opciones: ["A) Sistema de calidad", "B) Sistema de seguridad y salud ocupacional", "C) Sistema ambiental", "D) Sistema financiero"],
-    respuesta_correcta: "B"
+    pregunta: "¿Cuál es el propósito de la calibración de un instrumento?",
+    opciones: ["A) Limpiarlo", "B) Comparar con un patrón de referencia", "C) Cambiar su color", "D) Guardar en caja"],
+    respuesta_correcta: "B",
+    categoria: "Normativos"
   },
   {
-    pregunta: "¿Qué debe hacerse al recibir una orden de trabajo?",
-    opciones: ["A) Comenzar sin leer", "B) Leerla, aclarar dudas y evaluar riesgos", "C) Solo firmarla", "D) Entregarla a otro compañero"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué significa trazabilidad en metrología?",
+    opciones: ["A) Seguir a los operarios", "B) Relación con patrones nacionales o internacionales", "C) Registrar el número de veces usado", "D) Imprimir etiquetas"],
+    respuesta_correcta: "B",
+    categoria: "Normativos"
+  },
+  {
+    pregunta: "¿Qué sistema internacional de unidades se usa en ingeniería?",
+    opciones: ["A) Imperial", "B) SI", "C) Técnico", "D) Binario"],
+    respuesta_correcta: "B",
+    categoria: "Normativos"
+  },
+  {
+    pregunta: "¿Qué es un plano de fabricación?",
+    opciones: ["A) Plano de edificio", "B) Representación detallada para construir una pieza", "C) Plano de planta", "D) Vista de fachada"],
+    respuesta_correcta: "B",
+    categoria: "Básicos"
+  },
+  {
+    pregunta: "¿Cuál es un ejemplo de gestión ambiental en minería?",
+    opciones: ["A) Aumentar producción", "B) Segregar residuos según clasificación", "C) Aumentar horas de trabajo", "D) Reducir salario"],
+    respuesta_correcta: "B",
+    categoria: "Básicos"
   },
   {
     pregunta: "¿Qué significa ISO 14001?",
     opciones: ["A) Sistema de calidad", "B) Sistema de gestión ambiental", "C) Sistema de seguridad", "D) Sistema de logística"],
-    respuesta_correcta: "B"
+    respuesta_correcta: "B",
+    categoria: "Básicos"
   },
   {
-    pregunta: "¿Cómo se debe manejar la disposición de aceites usados?",
-    opciones: ["A) Tirarlos en el drenaje", "B) Disponerlos en contenedores designados y certificados", "C) Mezclarlos con otros residuos", "D) Dejarlos en el taller"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué es un sistema ERP?",
+    opciones: ["A) Plan de evacuación", "B) Software para gestionar recursos empresariales", "C) Método de dibujo", "D) Norma de seguridad"],
+    respuesta_correcta: "B",
+    categoria: "Básicos"
   },
   {
-    pregunta: "¿Qué es una buena práctica de eficiencia energética?",
-    opciones: ["A) Dejar equipos prendidos siempre", "B) Apagar equipos innecesarios y optimizar uso", "C) Usar solo bombillas tradicionales", "D) Aumentar el consumo"],
-    respuesta_correcta: "B"
+    pregunta: "¿Cuál es un ejemplo de herramienta de medición de precisión?",
+    opciones: ["A) Martillo", "B) Pie de metro", "C) Lápiz", "D) Escuadra"],
+    respuesta_correcta: "B",
+    categoria: "Básicos"
+  },
+  {
+    pregunta: "¿Qué es un plano de montaje?",
+    opciones: ["A) Representación de un edificio", "B) Representación de cómo se unen piezas", "C) Vista de planta", "D) Vista de fachada"],
+    respuesta_correcta: "B",
+    categoria: "Básicos"
+  },
+  {
+    pregunta: "¿Qué es PLM?",
+    opciones: ["A) Plan de Lectura Mecánica", "B) Gestión del Ciclo de Vida del Producto", "C) Proceso de Levantamiento Minero", "D) Plan de Mantenimiento"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es un modelo BIM?",
+    opciones: ["A) Sistema de calidad", "B) Modelo 3D de información del edificio", "C) Método de pintura", "D) Norma de dibujo"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Cuál es una buena práctica de eficiencia energética?",
+    opciones: ["A) Dejar equipos prendidos", "B) Apagar equipos innecesarios", "C) Aumentar el consumo", "D) Usar bombillas tradicionales"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   },
   {
     pregunta: "¿Qué debe hacerse si se detecta un derrame de sustancia peligrosa?",
-    opciones: ["A) Limpiarlo solo si es pequeño", "B) Seguir procedimiento de contingencia y notificar", "C) Dejarlo para otro turno", "D) Ignorarlo"],
-    respuesta_correcta: "B"
+    opciones: ["A) Limpiarlo solo si es pequeño", "B) Seguir procedimiento de contingencia", "C) Dejarlo para otro turno", "D) Ignorarlo"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   },
   {
-    pregunta: "¿Qué es la clasificación de residuos?",
-    opciones: ["A) Agruparlos por tamaño", "B) Separarlos según su naturaleza y tratamiento", "C) Ponerlos todos juntos", "D) Solo guardarlos"],
-    respuesta_correcta: "B"
+    pregunta: "¿Cuál es el propósito de un ART?",
+    opciones: ["A) Análisis de Riesgos del Trabajo", "B) Accidente Realizado en Turno", "C) Área de Reparación Temporal", "D) Acción Responsable de Turno"],
+    respuesta_correcta: "A",
+    categoria: "Técnicos"
   },
   {
-    pregunta: "¿Qué significa NCh 3262?",
-    opciones: ["A) Norma de calidad", "B) Norma de equidad y no discriminación", "C) Norma de dibujo técnico", "D) Norma de seguridad"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué debe hacerse al recibir una orden de trabajo?",
+    opciones: ["A) Comenzar sin leer", "B) Leerla, aclarar dudas y evaluar riesgos", "C) Solo firmarla", "D) Entregarla a otro compañero"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   },
   {
-    pregunta: "¿Qué debe hacerse para proteger los recursos hídricos en la operación?",
-    opciones: ["A) Usarlos sin control", "B) Implementar buenas prácticas de uso eficiente y prevención de contaminación", "C) Solo monitorear el caudal", "D) Aumentar el consumo"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué significa ISO 45001?",
+    opciones: ["A) Sistema de calidad", "B) Sistema de seguridad y salud ocupacional", "C) Sistema ambiental", "D) Sistema financiero"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   },
   {
-    pregunta: "¿Qué tipo de residuos deben separarse en la operación minera?",
-    opciones: ["A) Solo los grandes", "B) Todos según su clasificación (orgánicos, inorgánicos, peligrosos, etc.)", "C) Solo los electrónicos", "D) Solo los de oficina"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué es un sistema de unidades?",
+    opciones: ["A) Grupo de usuarios", "B) Conjunto de unidades de medida estandarizadas", "C) Tipo de archivo", "D) Programa de dibujo"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   },
   {
-    pregunta: "¿Qué es un plan de contingencia ambiental?",
-    opciones: ["A) Un plan para aumentar producción", "B) Un plan para responder a emergencias ambientales", "C) Un plan de vacaciones", "D) Un plan de compras"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué es un espacio confinado?",
+    opciones: ["A) Área con mucha luz", "B) Área con ventilación limitada y posibles riesgos", "C) Lugar amplio", "D) Solo un baño"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   },
   {
-    pregunta: "¿Qué debe hacerse al notar un impacto ambiental?",
-    opciones: ["A) No hacer nada", "B) Comunicarlo a supervisión y seguir protocolos", "C) Solo tomar foto", "D) Esperar a que desaparezca"],
-    respuesta_correcta: "B"
+    pregunta: "¿Qué debe hacerse en caso de una emergencia?",
+    opciones: ["A) Quedarse quieto", "B) Seguir el plan de emergencia", "C) Salir corriendo sin aviso", "D) Esperar a que otros actúen"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es un plano de detalle?",
+    opciones: ["A) Vista general de un sistema", "B) Representación precisa de una pieza", "C) Mapa del terreno", "D) Diagrama de flujo"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es una capa (layer) en CAD?",
+    opciones: ["A) Cambiar el color del archivo", "B) Organizar información gráfica", "C) Aumentar el tamaño del archivo", "D) Solo decorar el dibujo"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es un patrón de calibración?",
+    opciones: ["A) Decorar el laboratorio", "B) Referencia de medida confiable", "C) Aumentar velocidad de medición", "D) Reducir costos"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es la resolución de un instrumento?",
+    opciones: ["A) Resolver problemas", "B) Menor diferencia que puede detectar", "C) Tiempo de respuesta", "D) Tamaño físico"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es la exactitud en metrología?",
+    opciones: ["A) Rapidez de medición", "B) Cercanía al valor verdadero", "C) Tamaño del instrumento", "D) Cantidad de mediciones"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué debe hacerse si una medición está fuera de tolerancia?",
+    opciones: ["A) Ignorarla", "B) Registrarla, evaluarla y reportarla", "C) Ajustarla manualmente", "D) Volver a medir sin registrar"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es la repetibilidad en metrología?",
+    opciones: ["A) Medir con diferentes instrumentos", "B) Obtener resultados similares bajo mismas condiciones", "C) Cambiar el método", "D) Medir solo una vez"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué tipo de desgaste se evalúa frecuentemente con metrología?",
+    opciones: ["A) Visual", "B) Dimensional", "C) De color", "D) De sonido"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es la comprobación de mediciones?",
+    opciones: ["A) Medir solo una vez", "B) Verificar validez del resultado", "C) Solo revisar el instrumento", "D) Guardar el valor"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Cuál es el propósito de medir tolerancias?",
+    opciones: ["A) Aumentar tamaño", "B) Asegurar que el componente funcione", "C) Cambiar material", "D) Reducir velocidad"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué tipo de medición evalúa desalineaciones?",
+    opciones: ["A) Dimensional", "B) Geométrica", "C) Solo visual", "D) Solo de temperatura"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué debe incluirse en el registro de una medición?",
+    opciones: ["A) Solo el valor", "B) Fecha, responsable, valor, instrumento y condiciones", "C) Solo nombre del equipo", "D) Solo el turno"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué relación existe entre metrología y mantenimiento?",
+    opciones: ["A) No tienen relación", "B) Evalúa estado de equipos", "C) Solo se usa en ventas", "D) Solo en talleres"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es DS 594?",
+    opciones: ["A) Norma de calidad", "B) DS de condiciones sanitarias y ambientales", "C) Ley de tránsito", "D) Norma de dibujo"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué significa Ley 16.744?",
+    opciones: ["A) Seguridad minera", "B) Accidentes del trabajo y enfermedades profesionales", "C) Eficiencia energética", "D) Gestión ambiental"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es ORD. Nº2438 de la Dirección del Trabajo?",
+    opciones: ["A) Norma de calidad", "B) Reglamento sobre condiciones de trabajo", "C) Ley de minería", "D) Norma de dibujo"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es un sistema de gestión de documentos?",
+    opciones: ["A) Programa de dibujo", "B) Sistema para organizar y controlar archivos", "C) Método de impresión", "D) Norma de seguridad"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es un estándar de control de atrapamiento?",
+    opciones: ["A) Norma de seguridad", "B) Método de dibujo", "C) Procedimiento de rescate", "D) Tipo de herramienta"],
+    respuesta_correcta: "A",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es una vía de evacuación?",
+    opciones: ["A) Camino de entrada", "B) Ruta segura para salir del lugar", "C) Pasillo de oficina", "D) Área de trabajo"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es un procedimiento de emergencia?",
+    opciones: ["A) Plan de trabajo", "B) Acciones a seguir en caso de emergencia", "C) Documento de dibujo", "D) Norma de calidad"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es un formato para registros escritos?",
+    opciones: ["A) Plantilla para documentos", "B) Archivo de imagen", "C) Video instructivo", "D) Gráfico de barras"],
+    respuesta_correcta: "A",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es el comportamiento de los materiales?",
+    opciones: ["A) Cómo se ven", "B) Cómo responden a fuerzas y ambientes", "C) Cómo se pintan", "D) Cómo se almacenan"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es el concepto de esfuerzo mecánico?",
+    opciones: ["A) Fuerza aplicada por unidad de área", "B) Velocidad de rotación", "C) Temperatura de fusión", "D) Color del material"],
+    respuesta_correcta: "A",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es la corrosión?",
+    opciones: ["A) Cambio de color", "B) Degradación de un material por reacciones químicas", "C) Aumento de temperatura", "D) Cambio de forma"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es el análisis mediante elementos finitos?",
+    opciones: ["A) Método para calcular resistencia y deformaciones", "B) Método de pintura", "C) Técnica de dibujo", "D) Forma de soldadura"],
+    respuesta_correcta: "A",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es la interpretación de espacios y distribución?",
+    opciones: ["A) Cómo se ve un lugar", "B) Cómo se organizan los equipos en planta", "C) Cómo se limpia un área", "D) Cómo se pinta una pared"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué son los procesos de planta minera?",
+    opciones: ["A) Actividades de extracción y procesamiento de minerales", "B) Cultivo de plantas", "C) Actividades de oficina", "D) Ventas internacionales"],
+    respuesta_correcta: "A",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es la resistencia de materiales?",
+    opciones: ["A) Cómo se almacena un material", "B) Estudio de la capacidad de los materiales para soportar fuerzas", "C) Cómo se pinta un metal", "D) Cómo se transporta un material"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es un mecanismo de desgaste?",
+    opciones: ["A) Cómo se almacena un material", "B) Proceso de deterioro por fricción o uso", "C) Cómo se transporta un material", "D) Cómo se pinta un metal"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
+  },
+  {
+    pregunta: "¿Qué es la comunicación por radio en minería?",
+    opciones: ["A) Forma de entretenimiento", "B) Medio de comunicación formal en campo", "C) Sistema de dibujo", "D) Método de medición"],
+    respuesta_correcta: "B",
+    categoria: "Técnicos"
   }
 ];
 
@@ -333,7 +411,7 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timer);
-      finishQuiz();
+      finishQuizByTimeout();
     }
   }, 1000);
 }
@@ -409,6 +487,29 @@ nextBtn.addEventListener('click', () => {
   }
 });
 
+function finishQuizByTimeout() {
+  questionContainer.style.display = 'none';
+  resultContainer.style.display = 'block';
+
+  scoreText.textContent = "La evaluación ha terminado por tiempo.";
+  statusText.textContent = "⏰ Tiempo agotado.";
+  statusText.style.color = '#ff6600';
+
+  reviewList.innerHTML = '';
+  questions.forEach((q, i) => {
+    const li = document.createElement('li');
+    li.classList.add('review-item');
+    const userAns = userAnswers[i] || 'No respondida';
+    const isCorrect = userAns === q.respuesta_correcta;
+    li.innerHTML = `
+      <strong>P${i+1}:</strong> ${q.pregunta}<br>
+      Tu respuesta: ${userAns} - Correcta: ${q.respuesta_correcta} 
+      <span style="color:${isCorrect ? 'green' : 'red'}">${isCorrect ? '✔' : '✘'}</span>
+    `;
+    reviewList.appendChild(li);
+  });
+}
+
 function showResult() {
   questionContainer.style.display = 'none';
   resultContainer.style.display = 'block';
@@ -424,7 +525,6 @@ function showResult() {
     statusText.style.color = '#dc3545';
   }
 
-  // Mostrar resumen de respuestas
   reviewList.innerHTML = '';
   questions.forEach((q, i) => {
     const li = document.createElement('li');
@@ -440,13 +540,7 @@ function showResult() {
   });
 }
 
-function finishQuiz() {
-  clearInterval(timer);
-  showResult();
-}
-
 restartBtn.addEventListener('click', () => {
   resultContainer.style.display = 'none';
   startBtn.style.display = 'block';
 });
-
